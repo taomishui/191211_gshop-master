@@ -60,6 +60,7 @@
 
 <script>
   import AlertTip from '../../components/AlertTip/AlertTip.vue'
+  import {reqSendCode,reqPwdLogin,reqSmsLogin} from '../../api'
   export default {
     data(){
       return{
@@ -82,19 +83,30 @@
     },
     methods: {
       //异步获取短信验证码
-      getCode() {
+      async getCode() {
         //如果当前没有计时
         if (!this.computeTime) {
           //启动倒计时
           this.computeTime = 30
-          const intervalId = setInterval(() => {
+          this.intervalId = setInterval(() => {
             this.computeTime--
             if (this.computeTime <= 0) {
               //停止计时
-              clearInterval(intervalId)
+              clearInterval(this.intervalId)
             }
           }, 1000)
           //发送Ajax请求向指定手机号发送验证码短信
+          const result = await reqSendCode(this.phone)
+          if(result.code === 1){
+            //显示提示
+            this.showAlert(result.msg)
+            //停止倒计时
+            if(this.computeTime){
+              this.computeTime = 0
+              clearInterval(this.intervalId)
+              this.intervalId = undefined
+            }
+          }
 
         }
 
