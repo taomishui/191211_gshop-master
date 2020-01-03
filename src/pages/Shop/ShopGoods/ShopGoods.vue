@@ -37,22 +37,7 @@
                     <div class="cartcontrol-wrapper"> <CartControl :food="food"></CartControl></div>
                 </div>
               </li>
-              <li class="food-item bottom-border-1px">
-                <div class="icon">
-                  <img width="57" height="57" src="http://fuss10.elemecdn.com/d/22/260bd78ee6ac6051136c5447fe307jpeg.jpeg?imageView2/1/w/114/h/114">
-                </div>
-                <div class="content">
-                  <h2 class="name">红豆薏米美肤粥</h2>
-                  <p class="desc">甜粥</p>
-                  <div class="extra">
-                    <span class="count">月售 86 份</span>
-                    <span>好评率 100%</span>
-                  </div> <div class="price">
-                  <span class="now">￥12</span>
-                </div>
-                  <div class="cartcontrol-wrapper"> CartControl </div>
-                </div>
-              </li>
+
             </ul>
           </li>
         </ul>
