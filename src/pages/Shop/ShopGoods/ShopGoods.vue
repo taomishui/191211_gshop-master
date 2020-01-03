@@ -57,6 +57,7 @@
           </li>
         </ul>
       </div>
+      <ShopCart></ShopCart>
     </div>
     <Food :food="food" ref="food"></Food>
   </div>
@@ -67,6 +68,7 @@
   import {mapState} from 'vuex'
   import CartControl from '../../../components/CartControl/CartControl.vue'
   import Food from '../../../components/Food/Food.vue'
+  import ShopCart from '../../../components/Shopcart/ShopCart.vue'
   //列表显示之后创建
 
     export default {
@@ -158,7 +160,8 @@
       },
       components:{
         CartControl,
-        Food
+        Food,
+        ShopCart
       }
     }
 </script>
