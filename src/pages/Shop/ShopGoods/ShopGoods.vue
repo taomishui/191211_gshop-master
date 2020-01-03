@@ -3,7 +3,8 @@
     <div class="goods">
       <div class="menu-wrapper" >
         <ul>
-          <li class="menu-item" v-for="(good,index) in goods" :key="index" :class="{current:index === currentIndex}">
+          <li class="menu-item" v-for="(good,index) in goods" :key="index"
+              :class="{current:index === currentIndex}" @click="clickMenuItem(index)">
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
@@ -86,21 +87,34 @@
         ...mapState(['goods']),
         //计算得到当前分类的下标
         currentIndex(){
-
+          //得到条件数据
+          const {scrollY,tops}=this
+          //根据条件进行计算产生一个结果
+          const index=tops.findIndex((top,index)=>{
+            return scrollY>=top && scrollY<tops[index+1]
+          })
+          //返回结果
+          return index
         }
       },
       methods:{
         //初始化滚动
         _initScroll(){
           new BScroll('.menu-wrapper',{
-
+            click:true
           })
-          const foodsScroll=new BScroll('.foods-wrapper',{
-            probeType:2 //因为惯性滑动不会触发
+          this.foodsScroll=new BScroll('.foods-wrapper',{
+            probeType:2, //因为惯性滑动不会触发
+            click:true
           })
           //给右侧列表绑定scroll监听
-          foodsScroll.on('scroll',({x,y})=>{
+          this.foodsScroll.on('scroll',({x,y})=>{
             console.log(x,y)
+            this.scrollY=Math.abs(y)
+          })
+          //给右侧列表绑定scrollEnd监听
+          this.foodsScroll.on('scrollEnd',({x,y})=>{
+            console.log('scorllEnd',x,y)
             this.scrollY=Math.abs(y)
           })
         },
@@ -119,6 +133,13 @@
           //更新数据
           this.tops=tops
           console.log(tops)
+        },
+        clickMenuItem(index){
+          //console.log(index)
+          //使右侧列表滑动到对应的位置
+          const scrollY=this.tops[index]
+          this.scrollY=scrollY
+          this.foodsScroll.scrollTo(0,-scrollY,300)
         }
       }
     }
