@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="goods">
-      <div class="menu-wrapper" ref="menuWrapper">
+      <div class="menu-wrapper" >
         <ul>
-          <li class="menu-item" v-for="(good,index) in goods" :key="index" :class="{current:index===currentIndex}">
+          <li class="menu-item" v-for="(good,index) in goods" :key="index" :class="{current:index === currentIndex}">
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
@@ -12,7 +12,7 @@
 
         </ul>
       </div>
-      <div class="foods-wrapper" ref="foodsWrapper">
+      <div class="foods-wrapper">
         <ul>
           <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
@@ -60,13 +60,33 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
+  //列表显示之后创建
+
     export default {
+      data(){
+        return{
+          scrollY:0,
+          tops:[],
+        }
+      },
       mounted(){
-        this.$store.dispatch('getShopGoods')
+        this.$store.dispatch('getShopGoods',()=>{//数据更新后执行
+          this.$nextTick(()=>{//列表数据更新显示后执行
+            new BScroll('.menu-wrapper')
+            new BScroll('.foods-wrapper')
+          })
+
+        })
+
       },
       computed:{
-        ...mapState(['goods'])
+        ...mapState(['goods']),
+        //计算得到当前分类的下标
+        currentIndex(){
+
+        }
       }
     }
 </script>
